@@ -51,7 +51,7 @@ public class OrderMessageController {
 		QueueInformation queueInformation = rabbitAdmin.getQueueInfo(Constants.QUEUE_XML);
 		if (queueInformation != null) {
 			int count = queueInformation.getMessageCount();
-			for (int i = 0; i < count; i++) {
+			for (int i = 0; i < count-1; i++) {
 				FulFillmentOrder order = (FulFillmentOrder) rabbitXmlTemplate.receiveAndConvert(Constants.QUEUE_XML);
 				list.add(order);
 				orderMessageXMLRepository.save(modelMapper.map(order, OrderXMLEntity.class));
@@ -66,7 +66,7 @@ public class OrderMessageController {
 		List<OrderJsonDto> list = new ArrayList<>();
 		if (queueInformation != null) {
 			int count = queueInformation.getMessageCount();
-			for (int i = 0; i < count; i++) {
+			for (int i = 0; i < count-1; i++) {
 				OrderJsonDto dto = (OrderJsonDto) rabbitJsonTemplate.receiveAndConvert(Constants.QUEUE_JSON);
 				list.add(dto);
 				OrderJsonEntity entity = modelMapper.map(dto, OrderJsonEntity.class);
